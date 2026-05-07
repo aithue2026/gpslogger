@@ -31,17 +31,51 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
+
 public class CustomUrlWorker extends Worker {
 
     private static final Logger LOG = Logs.of(CustomUrlWorker.class);
     public CustomUrlWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
     }
+    private boolean wifiConnected() {
+
+        ConnectivityManager cm =
+                (ConnectivityManager) getApplicationContext()
+                        .getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        if (cm == null) {
+            return false;
+        }
+
+        Network network = cm.getActiveNetwork();
+
+        if (network == null) {
+            return false;
+        }
+
+        NetworkCapabilities capabilities =
+                cm.getNetworkCapabilities(network);
+
+        if (capabilities == null) {
+            return false;
+        }
+
+        return capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI);
+    }
 
     @NonNull
     @Override
     public Result doWork() {
 
+        if (! wifiConnected()) {
+            LOG.info("HTTP Request - " + urlRequests.length);
+            return Result.success();
+        }
+		
         UploadEvents.BaseUploadEvent callbackEvent = getCallbackEvent();
         CustomUrlRequest[] urlRequests = getCustomUrlRequests(getInputData());
 

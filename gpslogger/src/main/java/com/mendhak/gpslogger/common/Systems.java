@@ -341,8 +341,8 @@ public class Systems {
 
 
         Constraints constraints = new Constraints.Builder()
-                .setRequiredNetworkRequest(networkRequest, PreferenceHelper.getInstance().shouldAutoSendOnWifiOnly() ? NetworkType.UNMETERED: NetworkType.CONNECTED)
-                .setRequiredNetworkType(PreferenceHelper.getInstance().shouldAutoSendOnWifiOnly() ? NetworkType.UNMETERED: NetworkType.CONNECTED)
+                //.setRequiredNetworkRequest(networkRequest, PreferenceHelper.getInstance().shouldAutoSendOnWifiOnly() ? NetworkType.UNMETERED: NetworkType.CONNECTED)
+                //.setRequiredNetworkType(PreferenceHelper.getInstance().shouldAutoSendOnWifiOnly() ? NetworkType.UNMETERED: NetworkType.CONNECTED)
                 .build();
 
         OneTimeWorkRequest workRequest = new OneTimeWorkRequest
