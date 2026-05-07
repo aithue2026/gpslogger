@@ -18,7 +18,7 @@
 *.log
 
 # built application files
-*.apk
+#*.apk
 *.ap_
 *.asc
 *.SHA256
