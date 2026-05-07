@@ -72,7 +72,7 @@ public class CustomUrlWorker extends Worker {
     public Result doWork() {
 
         if (! wifiConnected()) {
-            LOG.info("HTTP Request - " + urlRequests.length);
+            LOG.info("NO WIFI CONNECTION");
             return Result.success();
         }
 		
@@ -91,6 +91,10 @@ public class CustomUrlWorker extends Worker {
         for (CustomUrlRequest urlRequest : urlRequests) {
             try{
                 LOG.info("HTTP Request - " + urlRequest.getLogURL());
+                if (!urlRequest.getLogURL().contains("192.168.1.11") && !urlRequest.getLogURL().contains("https://")) {
+                    LOG.info("NOT VALID URL");
+                    return Result.success();
+                }
 
                 OkHttpClient.Builder okBuilder = new OkHttpClient.Builder();
                 okBuilder.sslSocketFactory(Networks.getSocketFactory(AppSettings.getInstance()),
